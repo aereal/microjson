@@ -4,13 +4,28 @@ require 'open-uri'
 require 'sinatra'
 require 'redis'
 
-REDIS =
-  begin
-    require 'hiredis'
-    Redis.new(driver: :hiredis)
-  rescue LoadError
-    Redis.new
-  end
+configure :production do
+  redis_url = URI.parse(ENV['REDIS_URL'])
+  set :redis, {
+    host: redis_url.host,
+    port: redis_url.port,
+    password: redis_url.password,
+  }
+end
+
+configure :development, :test do
+  set :redis, {}
+end
+
+configure do
+  REDIS =
+    begin
+      require 'hiredis'
+      Redis.new(settings.redis.merge(driver: :hiredis))
+    rescue LoadError
+      Redis.new(settings.redis)
+    end
+end
 
 set :td_table, "microjson.development"
 
