@@ -38,7 +38,7 @@ end
 
 helpers do
   def td(object = {})
-    $stdout.puts("@%s.%s %s" % [settings.td_database, settings.td_table, object.merge(time: Time.now.to_i).to_json])
+    $stdout.puts("@[%s.%s] %s" % [settings.td_database, settings.td_table, object.merge(time: Time.now.to_i).to_json])
   end
 end
 
