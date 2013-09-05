@@ -28,7 +28,7 @@ configure do
 end
 
 set :td_database do
-  "microjson.#{settings.environment}"
+  "microjson_#{settings.environment}"
 end
 set :td_table, "events"
 
