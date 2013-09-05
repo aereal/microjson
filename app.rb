@@ -42,8 +42,14 @@ get '/' do
         REDIS.set(app_id, structure)
       end
     rescue OpenURI::HTTPError => e
-      td app_id: app_id, event: :fail_get_url
-      halt 400, { message: "Fail to access to Chrom Web Store" }.to_json
+      case e.io.status.first
+      when '404'
+        td app_id: app_id, event: :not_found
+        halt 404, { message: "Not Found" }.to_json
+      else
+        td app_id: app_id, event: :fail_get_url
+        halt 400, { message: "Fail to access to Chrom Web Store" }.to_json
+      end
     end
   end
 end
