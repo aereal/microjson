@@ -1,2 +1,2 @@
 web: bundle exec rackup --port ${PORT:-4567}
-redis: redis-server ${REDIS_CONF}
+mem: memcached

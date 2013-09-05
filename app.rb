@@ -2,30 +2,17 @@ require 'json'
 require 'mida'
 require 'open-uri'
 require 'sinatra'
-require 'redis'
+require 'dalli'
 
 configure :production do
-  redis_url = URI.parse(ENV['REDIS_URL'])
-  set :redis, {
-    host: redis_url.host,
-    port: redis_url.port,
-    password: redis_url.password,
-  }
+  CACHE = Dalli::Client.new(ENV['MEMCACHED_SERVERS'], username: ENV['MEMCACHED_USERNAME'], password: ENV['MEMCACHED_PASSWORD'])
 end
 
 configure :development, :test do
-  set :redis, {}
+  CACHE = Dalli::Client.new
 end
 
-configure do
-  REDIS =
-    begin
-      require 'hiredis'
-      Redis.new(settings.redis.merge(driver: :hiredis))
-    rescue LoadError
-      Redis.new(settings.redis)
-    end
-end
+set :cache_expire, 60 * 5 # 5 minutes
 
 set :td_database do
   "microjson_#{settings.environment}"
@@ -45,7 +32,7 @@ end
 get '/' do
   app_id = params[:app_id]
   halt 400, { message: 'Invalid app_id' }.to_json unless app_id && %r{^[^/]+$} === app_id
-  if value = REDIS.get(app_id)
+  if value = CACHE.get(app_id)
     td app_id: app_id, event: :cache_hit
     value
   else
@@ -57,7 +44,7 @@ get '/' do
       doc = Mida::Document.new(content, url)
       td app_id: app_id, event: :parse_html
       doc.items.map(&:to_h).to_json.tap do |structure|
-        REDIS.set(app_id, structure)
+        CACHE.set(app_id, structure, settings.cache_expire)
       end
     rescue OpenURI::HTTPError => e
       case e.io.status.first

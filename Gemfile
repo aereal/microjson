@@ -3,8 +3,7 @@ source 'https://rubygems.org'
 ruby '2.0.0'
 
 gem 'sinatra'
-gem 'redis'
-gem 'hiredis'
+gem 'dalli'
 gem 'mida', github: 'LawrenceWoodman/mida', branch: :master
 
 group :production do
