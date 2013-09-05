@@ -27,7 +27,10 @@ configure do
     end
 end
 
-set :td_table, "microjson.development"
+set :td_database do
+  "microjson.#{settings.environment}"
+end
+set :td_table, "events"
 
 before '/' do
   content_type :json
@@ -35,7 +38,7 @@ end
 
 helpers do
   def td(object = {})
-    $stdout.puts("@%s %s" % [settings.td_table, object.merge(time: Time.now.to_i).to_json])
+    $stdout.puts("@%s.%s %s" % [settings.td_database, settings.td_table, object.merge(time: Time.now.to_i).to_json])
   end
 end
 
