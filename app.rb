@@ -30,6 +30,7 @@ get '/' do
 end
 
 get '/microdata/chrome_store/:app_id.json' do
+  content_type :json
   app_id = params[:app_id]
   halt 400, { message: 'Invalid app_id' }.to_json unless app_id && %r{^[^/]+$} === app_id
   if value = CACHE.get(app_id)
