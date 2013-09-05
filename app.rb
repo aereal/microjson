@@ -19,10 +19,6 @@ set :td_database do
 end
 set :td_table, "events"
 
-before '/' do
-  content_type :json
-end
-
 helpers do
   def td(object = {})
     $stdout.puts("@[%s.%s] %s" % [settings.td_database, settings.td_table, object.merge(time: Time.now.to_i).to_json])
@@ -30,6 +26,10 @@ helpers do
 end
 
 get '/' do
+  erb :index
+end
+
+get '/microdata/chrome_store/:app_id.json' do
   app_id = params[:app_id]
   halt 400, { message: 'Invalid app_id' }.to_json unless app_id && %r{^[^/]+$} === app_id
   if value = CACHE.get(app_id)
@@ -58,3 +58,22 @@ get '/' do
     end
   end
 end
+
+__END__
+@@ index
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Microjson :: Microdata -> JSON</title>
+  </head>
+  <body>
+    <h1>Microjson</h1>
+    <p>Microdata -&gt; JSON</p>
+    <p>
+      <a href="https://chrome.google.com/webstore/detail/%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%83%E3%82%AF%E3%83%9E%E3%83%BC%E3%82%AF-googlechrome-%E6%8B%A1%E5%BC%B5/dnlfpnhinnjdgmjfpccajboogcjocdla">はてなブックマーク GoogleChrome 拡張</a>
+      -&gt;
+      <a href="/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json">/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json</a>
+    </p>
+  </body>
+</html>
