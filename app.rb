@@ -83,6 +83,10 @@ __END__
     <meta name="description" content="Convert Microdata included markup into JSON">
     <meta itemprop="name" content="Microjson">
     <meta itemprop="image" content="<%= url("/images/logo.png") %>">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@aereal">
+
     <title>Microjson :: Microdata -&gt; JSON</title>
   </head>
   <body>
