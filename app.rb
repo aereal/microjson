@@ -29,6 +29,14 @@ get '/' do
   erb :index
 end
 
+get '/microdata' do
+  redirect '/'
+end
+
+get '/microdata/chrome_store' do
+  redirect '/'
+end
+
 get '/microdata/chrome_store/:app_id.json' do
   content_type :json
   app_id = params[:app_id]
@@ -61,21 +69,23 @@ get '/microdata/chrome_store/:app_id.json' do
 end
 
 __END__
-@@ index
+@@ layout
 <!DOCTYPE html>
-<html>
+<html
+  itemtype="http://schema.org/WebPage"
+  itemscope>
   <head>
     <meta charset="utf-8">
-    <title>Microjson :: Microdata -> JSON</title>
+    <meta itemprop="url" content="<%= url('/') %>">
+    <meta name="description" content="Convert Microdata included markup into JSON">
+    <meta itemprop="name" content="Microjson">
+    <title>Microjson :: Microdata -&gt; JSON</title>
   </head>
   <body>
-    <h1>Microjson</h1>
-    <p>Microdata -&gt; JSON</p>
-    <p>
-      <a href="https://chrome.google.com/webstore/detail/%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%83%E3%82%AF%E3%83%9E%E3%83%BC%E3%82%AF-googlechrome-%E6%8B%A1%E5%BC%B5/dnlfpnhinnjdgmjfpccajboogcjocdla">はてなブックマーク GoogleChrome 拡張</a>
-      -&gt;
-      <a href="/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json">/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json</a>
-    </p>
+    <%= yield %>
+    <address itemprop="author" itemtype="http://schema.org/Person" itemscope>
+      <p><span itemprop="name">aereal</span>, <a rel="author" href="http://aereal.org/" itemprop="url">aereal.org</a>, <span itemprop="email">aereal@aereal.org</span></p>
+    </address>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -84,7 +94,20 @@ __END__
 
       ga('create', 'UA-43801314-1', 'microjson.herokuapp.com');
       ga('send', 'pageview');
-
     </script>
   </body>
 </html>
+
+@@ index
+<section>
+  <h1>Microjson</h1>
+  <p itemprop="description">Convert Microdata included markup into JSON</p>
+  <section>
+    <h2>Chrome Web Store</h2>
+    <p>
+      <a href="https://chrome.google.com/webstore/detail/%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%83%E3%82%AF%E3%83%9E%E3%83%BC%E3%82%AF-googlechrome-%E6%8B%A1%E5%BC%B5/dnlfpnhinnjdgmjfpccajboogcjocdla">はてなブックマーク GoogleChrome 拡張</a>
+      -&gt;
+      <a href="/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json">/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json</a>
+    </p>
+  </section>
+</section>
