@@ -37,7 +37,9 @@ get '/microdata' do
 end
 
 get '/microdata/chrome_store' do
-  redirect '/'
+  url = URI.parse(params[:url])
+  app_id = url.path[%r{^/webstore/detail/[^/]+/([^/]+)}, 1]
+  redirect "/microdata/chrome_store/#{ app_id }.json"
 end
 
 get '/microdata/chrome_store/:app_id.json' do
@@ -121,5 +123,9 @@ __END__
       -&gt;
       <a href="/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json">/microdata/chrome_store/dnlfpnhinnjdgmjfpccajboogcjocdla.json</a>
     </p>
+    <form action="/microdata/chrome_store" method="GET">
+      <input name="url" type="url" placeholder="https://chrome.google.com/webstore/detail/{name}/{app_id}" size="70">
+      <input type="submit" value="Convert to JSON">
+    </form>
   </section>
 </section>
