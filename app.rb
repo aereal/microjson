@@ -80,6 +80,7 @@ __END__
   <head>
     <meta charset="utf-8">
     <meta itemprop="url" content="<%= url('/') %>">
+    <meta name="keywords" content="JSON microdata semantic web">
     <meta name="description" content="Convert Microdata included markup into JSON">
     <meta itemprop="name" content="Microjson">
     <meta itemprop="image" content="<%= url("/images/logo.png") %>">
