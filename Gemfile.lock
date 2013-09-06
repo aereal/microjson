@@ -14,6 +14,7 @@ GEM
     coderay (1.0.9)
     dalli (2.6.4)
     dotenv (0.9.0)
+    erubis (2.7.0)
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
@@ -50,6 +51,7 @@ PLATFORMS
 
 DEPENDENCIES
   dalli
+  erubis
   foreman
   mida!
   pry
