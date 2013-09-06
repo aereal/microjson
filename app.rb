@@ -86,6 +86,9 @@ __END__
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:creator" content="@aereal">
+    <meta name="twitter:title" content="Microjson">
+    <meta name="twitter:description" content="Convert Microdata included markup into JSON">
+    <meta name="twitter:image:src" content="<%= url("/images/logo.png") %>">
 
     <title>Microjson :: Microdata -&gt; JSON</title>
   </head>
