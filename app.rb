@@ -12,6 +12,9 @@ configure :development, :test do
   CACHE = Dalli::Client.new
 end
 
+set :public_folder do
+  File.join(settings.root, 'public')
+end
 set :cache_expire, 60 * 5 # 5 minutes
 
 set :td_database do
@@ -79,6 +82,7 @@ __END__
     <meta itemprop="url" content="<%= url('/') %>">
     <meta name="description" content="Convert Microdata included markup into JSON">
     <meta itemprop="name" content="Microjson">
+    <meta itemprop="image" content="<%= url("/images/logo.png") %>">
     <title>Microjson :: Microdata -&gt; JSON</title>
   </head>
   <body>
